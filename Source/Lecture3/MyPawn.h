@@ -61,4 +61,16 @@ public:
 
 	void Roll(float Value);
 
+	void Fire();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	TSubclassOf<class ARocket> RocketTemplate;
+
+	//UFUNCTION(BlueprintImplementableEvent)
+	//void SpawnEffect(); //BP 함수 호출
+
+	UFUNCTION(BlueprintNativeEvent) //기본은 c++구현, 추가는 BP구현 
+	void SpawnEffect(); //C++,  BP 함수 호출 하는 코드
+	void SpawnEffect_Implementation(); //C++에서 실행되는 기본 코드
+
 };

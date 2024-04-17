@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "MyPawn.h"
@@ -9,6 +9,7 @@
 #include "GameFramework/FloatingPawnMovement.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Rocket.h"
 
 
 // Sets default values
@@ -54,7 +55,14 @@ AMyPawn::AMyPawn()
 	Camera->SetupAttachment(SpringArm);
 
 	Movement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("Movement"));
-	Movement->MaxSpeed = 1000.0f;
+	Movement->MaxSpeed = 0;
+
+	//Bluprint Class File
+	static ConstructorHelpers::FClassFinder<AActor> BP_Bomb(TEXT("/Script/Engine.Blueprint'/Game/Blueprints/BP_Bomb.BP_Bomb_C'"));
+	if (BP_Bomb.Succeeded())
+	{
+		RocketTemplate = BP_Bomb.Class; //Class Name 등록
+	}
 }
 
 // Called when the game starts or when spawned
@@ -95,6 +103,8 @@ void AMyPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 	PlayerInputComponent->BindAxis(TEXT("Pitch"), this, &AMyPawn::Pitch);
 	PlayerInputComponent->BindAxis(TEXT("Turn"), this, &AMyPawn::Roll);
+	PlayerInputComponent->BindAction(TEXT("Fire"), IE_Pressed, this, &AMyPawn::Fire);
+	//PlayerInputComponent->BindAction(TEXT("Fire"), IE_Released, this, &AMyPawn::Fire);
 }
 
 void AMyPawn::Pitch(float Value)
@@ -112,5 +122,19 @@ void AMyPawn::Roll(float Value)
 		0,
 		60 * Value * UGameplayStatics::GetWorldDeltaSeconds(GetWorld())
 	));
+}
+
+void AMyPawn::Fire()
+{
+	//Art 이펙트 발사
+	SpawnEffect(); //Blueprint
+
+	GetWorld()->SpawnActor<AActor>(RocketTemplate,
+		GetActorTransform());
+}
+
+void AMyPawn::SpawnEffect_Implementation()
+{
+	UE_LOG(LogTemp, Warning, TEXT("이건 C++에서 구현 한 로직"));
 }
 
