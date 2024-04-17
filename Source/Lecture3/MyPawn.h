@@ -29,30 +29,36 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void PropellerRotate(UStaticMeshComponent* where);
+
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	//UBoxComponent* Box
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "MyComponents")
 	TObjectPtr<UBoxComponent> Box;
 
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "MyComponents")
 	TObjectPtr<UStaticMeshComponent> Body;
 
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "MyComponents")
 	TObjectPtr<UStaticMeshComponent> Left;
 
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "MyComponents")
 	TObjectPtr<UStaticMeshComponent> Right;
 
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "MyComponents")
 	TObjectPtr<USpringArmComponent> SpringArm;
 
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "MyComponents")
 	TObjectPtr<UCameraComponent> Camera;
 
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "MyComponents")
 	TObjectPtr<UFloatingPawnMovement> Movement;
+
+	void Pitch(float Value);
+
+	void Roll(float Value);
 
 };
